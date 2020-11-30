@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30611.23
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProyectoIA", "ProyectoIA\ProyectoIA.csproj", "{4A1AD82C-EEA0-4528-82A7-EB7674A76EE5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{28066600-5EA4-43A3-8054-CC4B66A78137}"
+	ProjectSection(SolutionItems) = preProject
+		PulseStrean.cs = PulseStrean.cs
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4A1AD82C-EEA0-4528-82A7-EB7674A76EE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A1AD82C-EEA0-4528-82A7-EB7674A76EE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A1AD82C-EEA0-4528-82A7-EB7674A76EE5}.Debug|x64.ActiveCfg = Debug|x64
+		{4A1AD82C-EEA0-4528-82A7-EB7674A76EE5}.Debug|x64.Build.0 = Debug|x64
+		{4A1AD82C-EEA0-4528-82A7-EB7674A76EE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A1AD82C-EEA0-4528-82A7-EB7674A76EE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A1AD82C-EEA0-4528-82A7-EB7674A76EE5}.Release|x64.ActiveCfg = Release|x64
+		{4A1AD82C-EEA0-4528-82A7-EB7674A76EE5}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5DC00DF2-9A3A-4631-8529-8A8BD1CBE977}
+	EndGlobalSection
+EndGlobal
