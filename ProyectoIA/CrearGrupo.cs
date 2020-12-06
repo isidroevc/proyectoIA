@@ -13,26 +13,38 @@ namespace ProyectoIA.Data
 {
     public partial class CrearGrupo : Form
     {
-        private Form parent;
+        private Grupo grupo;
         private List<Alumno> alumnos;
-        private List<Label> tableLabels;
-        List<Button> tableButtons;
-        private int labelWidth;
-        private int labelHeight;
+        List<string> alumnosABorrar;
+        private RepositorioAlumno repositorioAlumno;
+        private RepositorioGrupo repositorioGrupo;
+        private string modo;
+        private string[] columnasDeDatos;
         public CrearGrupo()
         {
+            modo = "creacion";
+            alumnos = new List<Alumno>();
+            InicializarRepositorios();
             InitializeComponent();
         }
 
-        public CrearGrupo(Form parent)
+        public CrearGrupo(Grupo grupo)
         {
-            this.parent = parent;
-            this.alumnos = new List<Alumno>();
-            this.tableLabels = new List<Label>();
-            this.tableButtons = new List<Button>();
-            this.labelWidth = 780;
-            this.labelHeight = 24;
+            this.grupo = grupo;
+            alumnosABorrar = new List<string>();
+            InicializarRepositorios();
+            alumnos = repositorioAlumno.ObtenerAlumnosDeUnGrupo(grupo.Id);
+            modo = "edicion";
             InitializeComponent();
+            txtNumeroGrupo.Text = grupo.Numero;
+            txtNombreGrupo.Text = grupo.Nombre;
+            refrescarListaAlumnosParaEdicion();
+        }
+
+        private void InicializarRepositorios()
+        {
+            repositorioGrupo = new RepositorioGrupo();
+            repositorioAlumno = new RepositorioAlumno();
         }
 
         private void CrearGrupo_Load(object sender, EventArgs e)
@@ -40,42 +52,49 @@ namespace ProyectoIA.Data
             
         }
 
-        private void refrescarListaAlumnos()
+        private void refrescarListaAlumnosParaCreacion()
         {
-            tableLabels.ForEach(label => label.Dispose());
-            tableLabels.Clear();
-
-            tableButtons.ForEach(button => button.Dispose());
-            tableButtons.Clear();
-
-            for(int i = 0, count = this.alumnos.Count; i < count; i++)
+            tablaAumnos.Columns.Clear();
+            tablaAumnos.ReadOnly = true;
+            tablaAumnos.Rows.Clear();
+            tablaAumnos.Refresh();
+            columnasDeDatos = new string[] { "Numero de control", "Primer Apellido", "Segundo Apellido", "Nombre" };
+            for(int i = 0, c = columnasDeDatos.Length; i< c; i++)
             {
-                Label labelNombre = new Label();
-                labelNombre.Text = $"{alumnos[i].PrimerApellido} {alumnos[i].SegundoApellido} {alumnos[i].Nombre}";
-                labelNombre.Size = new Size(labelWidth, labelHeight);
-                labelNombre.Location = new Point(0, i * labelHeight);
-
-                Button deleteButton = new Button();
-                deleteButton.Text = "Delete";
-                deleteButton.Size = new Size(90, labelHeight);
-                deleteButton.Name = $"{i}";
-                deleteButton.Click += (object sender, EventArgs e) =>
-                {
-                    Button senderButton = (Button)sender;
-                    int index = Convert.ToInt32(senderButton.Name);
-                    alumnos.RemoveAt(index);
-                    refrescarListaAlumnos();
-                };
-                deleteButton.Location = new Point(780, i * labelHeight);
-
-                panelListaAlumnos.Controls.Add(labelNombre);
-                panelListaAlumnos.Controls.Add(deleteButton);
-
-                tableLabels.Add(labelNombre);
-                tableButtons.Add(deleteButton);
+                tablaAumnos.Columns.Add(columnasDeDatos[i], columnasDeDatos[i]);
             }
+            DataGridViewButtonColumn columnaEliminar = new DataGridViewButtonColumn();
+            columnaEliminar.HeaderText = "Eliminar";
+            columnaEliminar.Text = "Eliminar";
+            columnaEliminar.UseColumnTextForButtonValue = true;
+            tablaAumnos.Columns.Add(columnaEliminar);
+            foreach (Alumno alumno in alumnos)
+            {
+                string[] row = { alumno.NumeroControl, alumno.PrimerApellido, alumno.SegundoApellido, alumno.Nombre };
+                tablaAumnos.Rows.Add(row);
+            }
+        }
 
-
+        private void refrescarListaAlumnosParaEdicion()
+        {
+            tablaAumnos.Columns.Clear();
+            tablaAumnos.Rows.Clear();
+            tablaAumnos.Refresh();
+            columnasDeDatos = new string[] { "Numero de control", "Primer Apellido", "Segundo Apellido", "Nombre" };
+            for (int i = 0, c = columnasDeDatos.Length; i < c; i++)
+            {
+                tablaAumnos.Columns.Add(columnasDeDatos[i], columnasDeDatos[i]);
+            }
+            DataGridViewButtonColumn columnaEliminar = new DataGridViewButtonColumn();
+            columnaEliminar.HeaderText = "Eliminar";
+            columnaEliminar.Text = "Eliminar";
+            columnaEliminar.UseColumnTextForButtonValue = true;
+            tablaAumnos.Columns.Add(columnaEliminar);
+            foreach (Alumno alumno in alumnos)
+            {
+                string[] row = { alumno.NumeroControl, alumno.PrimerApellido, alumno.SegundoApellido, alumno.Nombre };
+                tablaAumnos.Rows.Add(row);
+            }
         }
 
         private void btnAgregarAlumno_Click(object sender, EventArgs e)
@@ -100,7 +119,7 @@ namespace ProyectoIA.Data
             txtNombreAlumno.Text = "";
             txtPrimerApellidoAlumno.Text = "";
             txtSegundoApellidoAlumno.Text = "";
-            refrescarListaAlumnos();
+            refrescarListaAlumnosParaCreacion();
         }
 
         private bool validarString(string s)
@@ -140,25 +159,152 @@ namespace ProyectoIA.Data
 
         private void btnTerminarCreacion_Click(object sender, EventArgs e)
         {
-            RepositorioAlumno repositorioAlumno = new RepositorioAlumno();
-            RepositorioGrupo repositorioGrupo = new RepositorioGrupo();
-            Grupo grupo = new Grupo()
+            if (modo == "creacion")
             {
-                Nombre = txtNombreGrupo.Text,
-                Numero = txtNumeroGrupo.Text
-            };
-            grupo = repositorioGrupo.Crear(grupo);
-            foreach(Alumno alumno in alumnos)
+                crearGrupo();
+            } else if (modo == "edicion")
             {
-                alumno.IdGrupo = grupo.Id;
-                repositorioAlumno.Crear(alumno);
+                actualizarGrupo();
             }
-            if (!(validarString(grupo.Nombre) && validarNumeroGrupo(grupo.Numero))) {
+        }
+
+        private void actualizarGrupo()
+        {
+   
+            if (!(validarString(txtNombreGrupo.Text) && validarNumeroGrupo(txtNumeroGrupo.Text)))
+            {
                 MessageBox.Show("Todos los datos del grupo son obligarios");
+                return;
+            }
+            grupo.Nombre = txtNombreGrupo.Text;
+            grupo.Numero = txtNumeroGrupo.Text;
+            grupo = repositorioGrupo.ActualizarGrupo(grupo);
+            foreach (Alumno alumno in alumnos)
+            {
+                if (alumno.Id != null && alumno.Id != "")
+                {
+                    repositorioAlumno.Actualizar(alumno);
+                } else
+                {
+                    alumno.IdGrupo = grupo.Id;
+                    repositorioAlumno.Crear(alumno);
+                }
+                
+            }
+            foreach(string alumnoABorrar in alumnosABorrar)
+            {
+                repositorioAlumno.Borrar(alumnoABorrar);
             }
             MessageBox.Show("Grupo creado con éxito");
             this.Close();
             this.Dispose();
+        }
+
+        private void crearGrupo()
+        {
+            grupo = new Grupo()
+            {
+                Nombre = txtNombreGrupo.Text,
+                Numero = txtNumeroGrupo.Text
+            };
+            if (!(validarString(grupo.Nombre) && validarNumeroGrupo(grupo.Numero)))
+            {
+                MessageBox.Show("Todos los datos del grupo son obligarios");
+                return;
+            }
+            grupo = repositorioGrupo.Crear(grupo);
+            foreach (Alumno alumno in alumnos)
+            {
+                alumno.IdGrupo = grupo.Id;
+                repositorioAlumno.Crear(alumno);
+            }
+            MessageBox.Show("Grupo creado con éxito");
+            this.Close();
+            this.Dispose();
+        }
+
+        private void tablaAumnos_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == 4 && this.alumnos.Count -1 >= e.RowIndex)
+            {
+                if (modo == "creacion")
+                {
+                    alumnos.RemoveAt(e.RowIndex);
+                    refrescarListaAlumnosParaCreacion();
+                } else if (modo == "edicion")
+                {
+                    DialogResult confirmationResult = MessageBox.Show("¿Estas seguro de eliminar este alumno?\nAdvertencia: No se podrá revertir este paso",
+                        "Confirmar eliminacion",
+                    MessageBoxButtons.YesNo);
+                    if (confirmationResult == DialogResult.Yes)
+                    {
+                        alumnosABorrar.Add(alumnos[e.RowIndex].Id);
+                        alumnos.RemoveAt(e.RowIndex);
+                        refrescarListaAlumnosParaEdicion();
+                    }
+                }
+            }
+        }
+
+        private void tablaAumnos_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex >= columnasDeDatos.Length)
+            {
+                return;
+            }
+            string columna = columnasDeDatos[e.ColumnIndex];
+            string value = tablaAumnos.Rows[e.RowIndex].Cells[columna].Value.ToString();
+            if (columna == "Numero de control")
+            {
+                if (!validarNumeroControl(value))
+                {
+                    MessageBox.Show("Introduzca un número de control válido");
+                    tablaAumnos.Rows[e.RowIndex].Cells[columna].Value = alumnos[e.RowIndex].NumeroControl;
+                } else
+                {
+                    alumnos[e.RowIndex].NumeroControl = value;
+                }
+            }
+
+            if (columna == "Primer Apellido")
+            {
+                if (!validarString(value))
+                {
+                    MessageBox.Show("Introduzca un apellido válido");
+                    tablaAumnos.Rows[e.RowIndex].Cells[columna].Value = alumnos[e.RowIndex].PrimerApellido;
+                }
+                else
+                {
+                    alumnos[e.RowIndex].PrimerApellido = value;
+                }
+            }
+
+            if (columna == "Segundo Apellido")
+            {
+                if (!validarString(value))
+                {
+                    MessageBox.Show("Introduzca un apellido válido");
+                    tablaAumnos.Rows[e.RowIndex].Cells[columna].Value = alumnos[e.RowIndex].SegundoApellido;
+                }
+                else
+                {
+                    alumnos[e.RowIndex].SegundoApellido = value;
+                }
+            }
+
+
+            if (columna == "Nombre")
+            {
+                if (!validarString(value))
+                {
+                    MessageBox.Show("Introduzca un nombre válido");
+                    tablaAumnos.Rows[e.RowIndex].Cells[columna].Value = alumnos[e.RowIndex].Nombre;
+                }
+                else
+                {
+                    alumnos[e.RowIndex].Nombre = value;
+                }
+            }
         }
     }
 }

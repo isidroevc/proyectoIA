@@ -61,5 +61,40 @@ namespace ProyectoIA.Data
             }
             return resultado;
         }
+
+        public Alumno Actualizar(Alumno alumno)
+        {
+            string sql = @"
+                UPDATE alumnos SET
+                    id = @id,
+                    id_grupo = @id_grupo,
+                    numero_control = @numero_control,
+                    nombre = @nombre,
+                    primer_apellido = @primer_apellido,
+                    segundo_apellido = @segundo_apellido
+                WHERE id = @id
+            ";
+            SQLiteCommand command = Connection.CreateCommand();
+            command.CommandText = sql;
+            command.Parameters.AddWithValue("@id", alumno.Id);
+            command.Parameters.AddWithValue("@id_grupo", alumno.IdGrupo);
+            command.Parameters.AddWithValue("@numero_control", alumno.NumeroControl);
+            command.Parameters.AddWithValue("@nombre", alumno.Nombre);
+            command.Parameters.AddWithValue("@primer_apellido", alumno.PrimerApellido);
+            command.Parameters.AddWithValue("@segundo_apellido", alumno.SegundoApellido);
+            command.ExecuteNonQuery();
+            return alumno;
+        }
+
+        public void Borrar(string id)
+        {
+            string sql = @"
+                DELETE FROM alumnos WHERE id = @id
+            ";
+            SQLiteCommand command = Connection.CreateCommand();
+            command.CommandText = sql;
+            command.Parameters.AddWithValue("@id", id);
+            command.ExecuteNonQuery();
+        }
     }
 }

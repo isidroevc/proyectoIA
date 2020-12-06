@@ -39,11 +39,6 @@ namespace ProyectoIA.Util
                     streams.Add(currentStream);
                 }
             }
-            
-            for(int i = 0, c = Screen.AllScreens.Length; i < c; i++)
-            {
-
-            }
             return streams;
         }
 

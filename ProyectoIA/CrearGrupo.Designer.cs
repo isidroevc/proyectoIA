@@ -43,9 +43,10 @@
             this.txtSegundoApellidoAlumno = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.btnAgregarAlumno = new System.Windows.Forms.Button();
-            this.panelListaAlumnos = new System.Windows.Forms.Panel();
             this.btnCancelar = new System.Windows.Forms.Button();
             this.btnTerminarCreacion = new System.Windows.Forms.Button();
+            this.tablaAumnos = new System.Windows.Forms.DataGridView();
+            ((System.ComponentModel.ISupportInitialize)(this.tablaAumnos)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -174,15 +175,6 @@
             this.btnAgregarAlumno.UseVisualStyleBackColor = true;
             this.btnAgregarAlumno.Click += new System.EventHandler(this.btnAgregarAlumno_Click);
             // 
-            // panelListaAlumnos
-            // 
-            this.panelListaAlumnos.AutoScroll = true;
-            this.panelListaAlumnos.BackColor = System.Drawing.SystemColors.Window;
-            this.panelListaAlumnos.Location = new System.Drawing.Point(17, 190);
-            this.panelListaAlumnos.Name = "panelListaAlumnos";
-            this.panelListaAlumnos.Size = new System.Drawing.Size(880, 388);
-            this.panelListaAlumnos.TabIndex = 15;
-            // 
             // btnCancelar
             // 
             this.btnCancelar.Location = new System.Drawing.Point(700, 605);
@@ -203,14 +195,26 @@
             this.btnTerminarCreacion.UseVisualStyleBackColor = true;
             this.btnTerminarCreacion.Click += new System.EventHandler(this.btnTerminarCreacion_Click);
             // 
+            // tablaAumnos
+            // 
+            this.tablaAumnos.AllowUserToAddRows = false;
+            this.tablaAumnos.AllowUserToDeleteRows = false;
+            this.tablaAumnos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.tablaAumnos.Location = new System.Drawing.Point(22, 199);
+            this.tablaAumnos.Name = "tablaAumnos";
+            this.tablaAumnos.Size = new System.Drawing.Size(880, 388);
+            this.tablaAumnos.TabIndex = 18;
+            this.tablaAumnos.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablaAumnos_CellClick);
+            this.tablaAumnos.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.tablaAumnos_CellEndEdit);
+            // 
             // CrearGrupo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(916, 640);
+            this.Controls.Add(this.tablaAumnos);
             this.Controls.Add(this.btnTerminarCreacion);
             this.Controls.Add(this.btnCancelar);
-            this.Controls.Add(this.panelListaAlumnos);
             this.Controls.Add(this.btnAgregarAlumno);
             this.Controls.Add(this.txtSegundoApellidoAlumno);
             this.Controls.Add(this.label8);
@@ -227,9 +231,11 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "CrearGrupo";
             this.Text = "Crear Grupo";
             this.Load += new System.EventHandler(this.CrearGrupo_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.tablaAumnos)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -252,8 +258,8 @@
         private System.Windows.Forms.TextBox txtSegundoApellidoAlumno;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button btnAgregarAlumno;
-        private System.Windows.Forms.Panel panelListaAlumnos;
         private System.Windows.Forms.Button btnCancelar;
         private System.Windows.Forms.Button btnTerminarCreacion;
+        private System.Windows.Forms.DataGridView tablaAumnos;
     }
 }

@@ -36,9 +36,9 @@
             // btnCrearGrupo
             // 
             this.btnCrearGrupo.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCrearGrupo.Location = new System.Drawing.Point(119, 179);
+            this.btnCrearGrupo.Location = new System.Drawing.Point(95, 175);
             this.btnCrearGrupo.Name = "btnCrearGrupo";
-            this.btnCrearGrupo.Size = new System.Drawing.Size(166, 66);
+            this.btnCrearGrupo.Size = new System.Drawing.Size(211, 66);
             this.btnCrearGrupo.TabIndex = 0;
             this.btnCrearGrupo.Text = "Crear grupo";
             this.btnCrearGrupo.UseVisualStyleBackColor = true;
@@ -47,9 +47,9 @@
             // btnPasarLista
             // 
             this.btnPasarLista.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnPasarLista.Location = new System.Drawing.Point(119, 271);
+            this.btnPasarLista.Location = new System.Drawing.Point(95, 267);
             this.btnPasarLista.Name = "btnPasarLista";
-            this.btnPasarLista.Size = new System.Drawing.Size(166, 66);
+            this.btnPasarLista.Size = new System.Drawing.Size(211, 66);
             this.btnPasarLista.TabIndex = 1;
             this.btnPasarLista.Text = "Pasar lista";
             this.btnPasarLista.UseVisualStyleBackColor = true;
@@ -74,6 +74,7 @@
             this.Controls.Add(this.btnPasarLista);
             this.Controls.Add(this.btnCrearGrupo);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "Menu";
             this.Text = "Menú";
             this.Load += new System.EventHandler(this.Menu_Load);

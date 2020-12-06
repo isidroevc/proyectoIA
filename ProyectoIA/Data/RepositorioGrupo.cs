@@ -56,5 +56,20 @@ namespace ProyectoIA.Data
             }
             return resultado;
         }
+
+        public Grupo ActualizarGrupo(Grupo grupo)
+        {
+            string sql = @"
+                UPDATE grupos SET numero = @numero, nombre = @nombre WHERE id = @id
+            ";
+            SQLiteCommand command = Connection.CreateCommand();
+            command.CommandText = sql;
+            command.Parameters.AddWithValue("@id", grupo.Id);
+            command.Parameters.AddWithValue("@numero", grupo.Numero);
+            command.Parameters.AddWithValue("@nombre", grupo.Nombre);
+
+            command.ExecuteNonQuery();
+            return grupo;
+        }
     }
 }

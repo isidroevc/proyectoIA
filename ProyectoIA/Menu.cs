@@ -26,7 +26,7 @@ namespace ProyectoIA
 
         private void btnCrearGrupo_Click(object sender, EventArgs e)
         {
-            CrearGrupo crearGrupo = new CrearGrupo(this);
+            CrearGrupo crearGrupo = new CrearGrupo();
             crearGrupo.ShowDialog(this);
         }
 

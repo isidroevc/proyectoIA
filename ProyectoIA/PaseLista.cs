@@ -18,6 +18,7 @@ namespace ProyectoIA
         private Grupo grupo;
         private List<Alumno> alumnos;
         private RepositorioAlumno repositorioAlumno;
+        private RepositorioSesiones repositorioSesiones;
         private List<Label> tableLabels;
         private List<Button> tableButtons;
         Dictionary<string, Alumno> alumnosAusentes;
@@ -32,6 +33,7 @@ namespace ProyectoIA
             this.grupo = grupo;
             this.textExtractor = new DefaultTextExtractor(1);
             this.repositorioAlumno = new RepositorioAlumno();
+            this.repositorioSesiones = new RepositorioSesiones(); 
             this.tableLabels = new List<Label>();
             this.tableButtons = new List<Button>();
             this.alumnosPresentes = new Dictionary<string, Alumno>();
@@ -48,7 +50,7 @@ namespace ProyectoIA
 
         private void PaseLista_Load(object sender, EventArgs e)
         {
-
+            label1.Text = $"{label1.Text} - Grupo {grupo.Numero} {grupo.Nombre}";
         }
 
         public void CargarAlumnos()
@@ -73,7 +75,7 @@ namespace ProyectoIA
             for (int i = 0, count = this.alumnos.Count; i < count; i++)
             {
                 Label labelNombre = new Label();
-                labelNombre.Text = $"{alumnos[i].NumeroControl} - {alumnos[i].PrimerApellido} {alumnos[i].SegundoApellido} {alumnos[i].Nombre}";
+                labelNombre.Text = $"{alumnos[i].NumeroControl} - {alumnos[i].Nombre}";
                 labelNombre.Size = new Size(labelWidth, labelHeight);
                 labelNombre.Location = new Point(0, i * labelHeight);
                 labelNombre.ForeColor = Color.Red;
@@ -123,6 +125,31 @@ namespace ProyectoIA
                 }
             }
             return true;
+        }
+
+        private void btnGuardar_Click(object sender, EventArgs e)
+        {
+            DialogResult confirmationResult = MessageBox.Show("¿Estas seguro de guardar el pase de lista como esta ahora?\nAdvertencia: No se podrá revertir este paso", 
+                "Confirmar guardado", 
+                MessageBoxButtons.YesNo);
+            if (confirmationResult == DialogResult.Yes)
+            {
+                Sesion sesion = new Sesion()
+                {
+                    IdGrupo = grupo.Id,
+                    Fecha = DateTime.Now,
+                    Asistencias = alumnosPresentes.Select(a => a.Key).ToArray<string>(),
+                };
+
+                repositorioSesiones.Crear(sesion);
+                Close();
+            }
+            
+        }
+
+        private void PaseLista_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.textExtractor.StopWorking();
         }
     }
 }

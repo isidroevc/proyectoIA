@@ -116,6 +116,8 @@
     <Compile Include="Data\Repositorio.cs" />
     <Compile Include="Data\RepositorioAlumno.cs" />
     <Compile Include="Data\RepositorioGrupo.cs" />
+    <Compile Include="Data\RepositorioSesiones.cs" />
+    <Compile Include="Data\Sesion.cs" />
     <Compile Include="ListadoGrupos.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -148,6 +150,12 @@
     <Compile Include="Util\ITextExtractor.cs" />
     <Compile Include="Util\IronOCR.cs" />
     <Compile Include="Util\IOCR.cs" />
+    <Compile Include="VistaSesionesGrupo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VistaSesionesGrupo.Designer.cs">
+      <DependentUpon>VistaSesionesGrupo.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="CrearGrupo.resx">
       <DependentUpon>CrearGrupo.cs</DependentUpon>
     </EmbeddedResource>
@@ -172,6 +180,9 @@
     </Compile>
     <EmbeddedResource Include="TestRecord.resx">
       <DependentUpon>TestRecord.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VistaSesionesGrupo.resx">
+      <DependentUpon>VistaSesionesGrupo.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

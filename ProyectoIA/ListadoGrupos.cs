@@ -17,11 +17,13 @@ namespace ProyectoIA
     {
         private List<Grupo> grupos;
         private RepositorioGrupo repositorioGrupo;
-        
+        private List<Label> labels;
+        private List<Button> buttons;
         public ListadoGrupos()
         {
             repositorioGrupo = new RepositorioGrupo();
-            
+            labels = new List<Label>();
+            buttons = new List<Button>();
             InitializeComponent();
             CargarGrupos();
             
@@ -36,6 +38,9 @@ namespace ProyectoIA
         {
             int anchoBotones = 60, altoBotones = 20, alturaLabel = 20;
             int index = 0;
+            panelListadoGrupos.Controls.Clear();
+            labels.ForEach(l => l.Dispose());
+            buttons.ForEach(b => b.Dispose());
             this.grupos = this.repositorioGrupo.ObtenerLista();
             foreach(Grupo grupo in grupos)
             {
@@ -52,24 +57,29 @@ namespace ProyectoIA
                 botonPasarLista.Location = new Point(340, index * altoBotones);
                 botonPasarLista.Click += PasarList_ClickHandler;
 
+                Button botonListas = new Button();
+                botonListas.Text = "Listas";
+                botonListas.Name = grupo.Id;
+                botonListas.Size = new Size(anchoBotones, altoBotones);
+                botonListas.Location = new Point(410, index * altoBotones);
+                botonListas.Click += VerLista_ClickHandler;
+
                 Button botonEditar = new Button();
                 botonEditar.Text = "Editar";
                 botonEditar.Name = grupo.Id;
                 botonEditar.Size = new Size(anchoBotones, altoBotones);
-                botonEditar.Location = new Point(410, index * altoBotones);
-          
-
-                Button botonEliminar = new Button();
-                botonEliminar.Text = "Editar";
-                botonEliminar.Name = grupo.Id;
-                botonEliminar.Size = new Size(anchoBotones, altoBotones);
-                botonEliminar.Location = new Point(410, index * altoBotones);
+                botonEditar.Location = new Point(480, index * altoBotones);
+                botonEditar.Click += Editar_ClickHandler;
 
                 panelListadoGrupos.Controls.Add(labelGrupo);
                 panelListadoGrupos.Controls.Add(botonPasarLista);
+                panelListadoGrupos.Controls.Add(botonListas);
                 panelListadoGrupos.Controls.Add(botonEditar);
-                panelListadoGrupos.Controls.Add(botonEliminar);
 
+                labels.Add(labelGrupo);
+                buttons.Add(botonPasarLista);
+                buttons.Add(botonListas);
+                buttons.Add(botonEditar);
                 index++; 
             }
         }
@@ -81,6 +91,27 @@ namespace ProyectoIA
             PaseLista paseLista = new PaseLista(grupo);
             paseLista.ShowDialog(this);
             
+        }
+
+        private void Editar_ClickHandler(Object sender, EventArgs e)
+        {
+            Button senderButton = (Button)sender;
+            Grupo grupo = this.grupos.Find(g => g.Id == senderButton.Name);
+            CrearGrupo crearGrupo = new CrearGrupo(grupo);
+            WindowState = FormWindowState.Minimized;
+            crearGrupo.ShowDialog(this);
+            CargarGrupos();
+            WindowState = FormWindowState.Normal;
+        }
+
+        private void VerLista_ClickHandler(Object sender, EventArgs e)
+        {
+            Button senderButton = (Button)sender;
+            Grupo grupo = this.grupos.Find(g => g.Id == senderButton.Name);
+            VistaSesionesGrupo vista = new VistaSesionesGrupo(grupo);
+            this.WindowState = FormWindowState.Minimized;
+            vista.ShowDialog();
+            this.WindowState = FormWindowState.Normal;
         }
 
         private void timer1_Tick(object sender, EventArgs e)
